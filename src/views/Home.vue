@@ -3,8 +3,10 @@
     <div class="container">
       <div class="control has-icons-left has-icons-right">
         <input
+          @keyup.enter="search"
           class="input is-large is-rounded"
           type="search"
+          v-model="searchValue"
           placeholder="Search for a place..."
         />
         <span class="icon is-medium is-left">
@@ -193,11 +195,20 @@ export default {
   },
   data() {
     return {
-      star: ""
+      star: "",
+      searchValue: null
     };
   },
   created() {
     this.star = Star;
+  },
+  methods: {
+    search() {
+      this.$router.push({
+        path: "search",
+        query: { keyword: this.searchValue }
+      });
+    }
   }
 };
 </script>
