@@ -42,9 +42,21 @@
           Menu
         </p>
         <ul class="menu-list">
-          <li><a class="is-active">Home</a></li>
-          <li><a>Search</a></li>
-          <li><a>Add a place</a></li>
+          <li>
+            <router-link active-class="is-active" to="/" exact>
+              Home
+            </router-link>
+          </li>
+          <li>
+            <router-link active-class="is-active" to="/search">
+              Search
+            </router-link>
+          </li>
+          <li>
+            <router-link active-class="is-active" to="/add-place">
+              Add a place
+            </router-link>
+          </li>
         </ul>
       </aside>
     </transition>
@@ -120,6 +132,13 @@ export default {
       sidebarIsVisible: false
     };
   },
+  watch: {
+    $route() {
+      if (this.sidebarIsVisible) {
+        this.toggleSideBar();
+      }
+    }
+  },
   methods: {
     toggleSideBar() {
       this.sidebarIsVisible = !this.sidebarIsVisible;
@@ -160,7 +179,7 @@ export default {
   }
   .slide-enter-active,
   .slide-leave-active {
-    transition: transform 0.5s;
+    transition: transform 0.3s;
   }
   .slide-enter,
   .slide-leave-to {
