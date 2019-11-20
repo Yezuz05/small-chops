@@ -19,26 +19,28 @@
         <h3 class="title">Nearby Places</h3>
         <div class="columns">
           <div class="column is-one-quarter is-one-third-tablet">
-            <div class="card">
-              <div class="card-image">
-                <figure class="image is-4by3">
-                  <img
-                    src="https://bulma.io/images/placeholders/1280x960.png"
-                    alt="Placeholder image"
-                  />
-                </figure>
-              </div>
-              <div class="card-content">
-                <div class="media">
-                  <div class="media-content">
-                    <p class="title is-4">Sege's Puff Puff</p>
+            <router-link to="/place">
+              <div class="card">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <img
+                      src="https://bulma.io/images/placeholders/1280x960.png"
+                      alt="Placeholder image"
+                    />
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <div class="media">
+                    <div class="media-content">
+                      <p class="title is-4">Sege's Puff Puff</p>
+                    </div>
+                  </div>
+                  <div class="content">
+                    Willi's house address in Asokoro
                   </div>
                 </div>
-                <div class="content">
-                  Willi's house address in Asokoro
-                </div>
               </div>
-            </div>
+            </router-link>
           </div>
           <div class="column is-one-quarter is-one-third-tablet">
             <div class="card">

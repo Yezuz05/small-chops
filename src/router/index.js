@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Search from "../views/Search.vue";
 import AddPlace from "../views/AddPlace.vue";
+import Place from "../views/Place.vue";
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
     path: "/add-place",
     name: "add-place",
     component: AddPlace
+  },
+  {
+    path: "/place",
+    name: "place",
+    component: Place
   },
   {
     path: "/about",
