@@ -3,17 +3,17 @@
     <h3 class="title">Add Place</h3>
     <section class="columns">
       <div class="column is-5 is-full-mobile">
-        <form>
+        <form @submit.prevent="onSubmit">
           <div class="field">
             <label class="label">Name</label>
             <div class="control">
-              <input class="input" type="text" />
+              <input class="input" type="text" v-model="form.name" />
             </div>
           </div>
           <div class="field">
             <label class="label">Address</label>
             <div class="control">
-              <input class="input" type="text" />
+              <input class="input" type="text" v-model="form.address" />
             </div>
           </div>
 
@@ -41,8 +41,10 @@
               <v-select
                 multiple
                 :searchable="false"
-                v-model="category"
-                :options="['BBQ', 'Puff Puff']"
+                v-model="form.category"
+                :options="categories"
+                :reduce="category => category.id"
+                label="name"
               />
             </div>
           </div>
@@ -50,7 +52,11 @@
           <div class="field">
             <label class="label">Description</label>
             <div class="control">
-              <textarea class="textarea" placeholder="Textarea"></textarea>
+              <textarea
+                class="textarea"
+                placeholder="Description"
+                v-model="form.description"
+              ></textarea>
             </div>
           </div>
 
@@ -89,11 +95,23 @@
 export default {
   data() {
     return {
-      category: null,
       map: null,
       autocomplete: null,
-      placeChangedListener: null
+      placeChangedListener: null,
+      isFetchingCategories: false,
+      form: {
+        name: null,
+        address: null,
+        category: null,
+        description: null,
+        gps_location: null
+      },
+      categories: [],
+      placeMarker: null
     };
+  },
+  created() {
+    this.getCategories();
   },
   mounted() {
     this.initMap();
@@ -124,11 +142,44 @@ export default {
       this.map.fitBounds(place.geometry.viewport);
     },
     handleMapClick(event) {
-      console.log(event);
+      if (this.placeMarker) {
+        this.placeMarker.setMap(null);
+        this.placeMarker = null;
+      }
+      const position = {
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng()
+      };
+      // eslint-disable-next-line no-undef
+      this.placeMarker = new google.maps.Marker({ position });
+      this.placeMarker.setMap(this.map);
+      this.form.gps_location = { ...position };
     },
     destroyed() {
       // eslint-disable-next-line no-undef
       google.maps.event.removeListener(this.placeChangedListener);
+    },
+    getCategories() {
+      this.isFetchingCategories = true;
+      this.$axios.get("category").then(res => {
+        this.isFetchingCategories = false;
+        this.categories = [...res.data];
+      });
+    },
+    onSubmit() {
+      this.$axios
+        .post("place", this.form)
+        .then(() => {
+          this.$toast.success("Place Added");
+          this.$router.push("/");
+        })
+        .catch(err => {
+          if (err.response) {
+            this.$toast.error(`${err.response.data.message}`);
+          } else {
+            this.$toast.error("An error occurred try again");
+          }
+        });
     }
   }
 };
